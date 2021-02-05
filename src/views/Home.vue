@@ -1,18 +1,29 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div>
+      初始化页面
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
-
 export default {
   name: 'Home',
-  components: {
-    HelloWorld
+  data () {
+    return {
+      
+    };
+  },
+  components: {},
+  methods: {
+    async getUserInfo() {
+      const token = window.sessionStorage.getItem('eleToken')
+      const {data} = await this.$http.get('/users/info',{Authorization: token})
+    }
+  },
+  created() {
+    this.getUserInfo()
   }
 }
 </script>
+
+<style scoped>
+</style>
