@@ -7,6 +7,8 @@
 <script>
 // 引入jwt-decode,用来解析token
 import jwt_decode from "jwt-decode";
+// 导入全局css样式
+import "@/assets/css/global.css";
 
 export default {
   name: "app",

@@ -5,17 +5,39 @@ import Register from '../views/Register'
 import Login from '../views/Login'
 import NotFound from '../views/404'
 
+import Welcome from '../components/Welcome'
+import Users from '../components/user/Users'
+import Articles from '../components/article/Articles'
+import Category from '../components/article/Category'
+import Admin from '../components/Admin'
+
 Vue.use(VueRouter)
 
-const routes = [
-  {
+const routes = [{
     path: '/',
     redirect: '/home'
   },
   {
     path: '/home',
     name: 'Home',
-    component: Home
+    component: Home,
+    redirect: '/welcome',
+    children: [{
+      path: '/welcome',
+      component: Welcome
+    }, {
+      path: '/users',
+      component: Users
+    }, {
+      path: '/articles',
+      component: Articles
+    }, {
+      path: '/category',
+      component: Category
+    }, {
+      path: '/admin',
+      component: Admin
+    }]
   },
   {
     path: '/register',
