@@ -284,11 +284,7 @@ export default {
   methods: {
     // 请求所有用户信息
     async getUserList() {
-      const token = window.sessionStorage.getItem("eleToken");
-      const data = await this.$http.get("/users", {
-        Authorization: token,
-        params: this.queryInfo,
-      });
+      const data = await this.$http.get("/users", {params: this.queryInfo});
       if (data.status !== 200) {
         return this.$message.error("数据获取失败！");
       }
@@ -303,27 +299,17 @@ export default {
       if (!username) {
         return this.$message.error("请输入用户名！");
       }
-      const token = window.sessionStorage.getItem("eleToken");
-      const data = await this.$http.get(`/users/user/${username}`, {
-        Authorization: token,
-      });
+      const data = await this.$http.get(`/users/user/${username}`);
       if (!data) {
         return this.$message.error("没有查询到用户信息!");
       }
       this.userlist = data.data.users;
-      this.total = data.data.total;
-      this.count = data.data.count;
     },
 
     // 监听switch开关改变的事件
     async userStateChange(userinfo) {
       const token = window.sessionStorage.getItem("eleToken");
-      const data = await this.$http.post(
-        `/users/${userinfo._id}/state/${userinfo.state}`,
-        {
-          Authorization: token,
-        }
-      );
+      const data = await this.$http.post(`/users/${userinfo._id}/state/${userinfo.state}`);
       if (data.status !== 200) {
         userinfo.state = !userinfo.state;
         return this.$message.error("更新用户状态失败!");
@@ -354,10 +340,7 @@ export default {
         if (!valid) return;
         // 发起添加用户的网络请求
         const token = window.sessionStorage.getItem("eleToken");
-        const res = await this.$http.post("/users/add", {
-          Authorization: token,
-          users: this.addForm,
-        });
+        const res = await this.$http.post("/users/add", {users: this.addForm});
         if (res.status !== 200) {
           return this.$message.error("邮箱已被注册！");
         }
@@ -372,10 +355,7 @@ export default {
     // 编辑用户信息
     async editUserBtn(username) {
       this.editUserDialog = true;
-      const token = window.sessionStorage.getItem("eleToken");
-      const data = await this.$http.get(`/users/user/${username}`, {
-        Authorization: token,
-      });
+      const data = await this.$http.get(`/users/user/${username}`);
       if (!data) {
         return this.$message.error("没有查询到用户信息!");
       }
@@ -389,11 +369,7 @@ export default {
 
         // 发起修改用户的网络请求
         const _id = this.editUserForm._id;
-        const token = window.sessionStorage.getItem("eleToken");
-        const res = await this.$http.post(`/users/edit/${_id}`, {
-          Authorization: token,
-          users: this.editUserForm,
-        });
+        const res = await this.$http.post(`/users/edit/${_id}`, {users: this.editUserForm});
         if (res.status !== 200) {
           return this.$message.error("修改用户信息失败！");
         }
@@ -419,9 +395,7 @@ export default {
         }).then( async () => {
           // 发送删除用户的网络请求
           const token = window.sessionStorage.getItem("eleToken");
-          const data = await this.$http.delete(`/users/delete/${id}`, {
-            Authorization: token
-          })
+          const data = await this.$http.delete(`/users/delete/${id}`)
           if(data.status !== 200) {
             return this.$message.error('删除用户失败！')
           }

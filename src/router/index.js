@@ -8,6 +8,7 @@ import NotFound from '../views/404'
 import Welcome from '../components/Welcome'
 import Users from '../components/user/Users'
 import Articles from '../components/article/Articles'
+import Edit from '../components/article/Edit'
 import Category from '../components/article/Category'
 import Admin from '../components/Admin'
 
@@ -31,6 +32,10 @@ const routes = [{
     }, {
       path: '/articles',
       component: Articles
+    }, {
+      path: '/articles/edit',
+      name: 'Edit',
+      component: Edit
     }, {
       path: '/category',
       component: Category

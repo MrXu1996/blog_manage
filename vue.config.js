@@ -1,3 +1,4 @@
+const webpack = require('webpack')
 module.exports = {
     // baseUrl: '/',
     // devServer: {
@@ -18,4 +19,10 @@ module.exports = {
     //     },
     //     befor: app => {}
     // }
+    chainWebpack: config => {
+		config.plugin('provide').use(webpack.ProvidePlugin, [{
+            'window.Quill': 'quill/dist/quill.js',
+            'Quill': 'quill/dist/quill.js'
+	    }]);
+	}
 }
