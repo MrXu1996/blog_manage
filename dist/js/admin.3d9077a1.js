@@ -1,0 +1,2 @@
+(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["admin"],{f529:function(e,n,t){"use strict";t.r(n);var r=function(){var e=this,n=e.$createElement,t=e._self._c||n;return t("div",[e._v(e._s(e.user.name))])},s=[],u={name:"Admin",data:function(){return{}},components:{},methods:{},computed:{user:function(){return this.$store.getters.user}}},o=u,a=t("2877"),c=Object(a["a"])(o,r,s,!1,null,"92ff6720",null);n["default"]=c.exports}}]);
+//# sourceMappingURL=admin.3d9077a1.js.map

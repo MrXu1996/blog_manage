@@ -1,5 +1,5 @@
 <template>
-  <div>admin</div>
+  <div>{{ user.name }}</div>
 </template>
 
 <script>
@@ -11,7 +11,12 @@ export default {
     };
   },
   components: {},
-  methods: {}
+  methods: {},
+  computed: {
+    user() {
+      return this.$store.getters.user;
+    },
+  }
 }
 </script>
 

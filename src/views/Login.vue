@@ -1,5 +1,23 @@
 <template>
   <div class="login">
+    <vue-particles
+      color="#dedede"
+      :particleOpacity="0.7"
+      :particlesNumber="80"
+      shapeType="triangle"
+      :particleSize="4"
+      linesColor="#dedede"
+      :linesWidth="1"
+      :lineLinked="true"
+      :lineOpacity="0.4"
+      :linesDistance="150"
+      :moveSpeed="3"
+      :hoverEffect="true"
+      hoverMode="grab"
+      :clickEffect="true"
+      clickMode="push"
+    >
+    </vue-particles>
     <div class="loginBox">
       <h2>博客管理员登录</h2>
       <el-form
@@ -127,6 +145,11 @@ button {
   border: none;
   outline: none;
 }
+#particles-js{
+   width: 100%;
+   height: calc(100% - 100px);
+    position: absolute;  
+ }
 .login {
   height: 100vh;
   background: linear-gradient(#141e30, #243b55);

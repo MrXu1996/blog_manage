@@ -7,6 +7,9 @@
           <img src="../assets/img/touxiang.png" alt="" />
           <span>个人博客后台管理系统</span>
         </div>
+        <div class="time">
+          <span>{{ time }}</span>
+        </div>
         <div class="userinfo">
           <span>{{ user.name }}</span>
           <el-button type="info" @click="logout">退出</el-button>
@@ -15,7 +18,7 @@
       <!-- 页面主体区域 -->
       <el-container>
         <!-- 侧边栏 -->
-        <el-aside :width="isCollapse? '64px' : '200px'">
+        <el-aside :width="isCollapse ? '64px' : '200px'">
           <div class="toggle-button" @click="toggleCollapse">|||</div>
           <!-- 侧边栏菜单区域 -->
           <el-menu
@@ -75,6 +78,14 @@
                   <span>分类管理</span>
                 </template>
               </el-menu-item>
+              <el-menu-item index="/tag">
+                <template slot="title">
+                  <!-- 图标 -->
+                  <i class="el-icon-menu"></i>
+                  <!-- 文本 -->
+                  <span>标签管理</span>
+                </template>
+              </el-menu-item>
             </el-submenu>
             <el-menu-item index="/admin">
               <i class="el-icon-setting"></i>
@@ -87,8 +98,6 @@
           <router-view />
         </el-main>
       </el-container>
-      <!-- 底部区域 -->
-      <el-footer>Footer</el-footer>
     </el-container>
   </div>
 </template>
@@ -100,7 +109,9 @@ export default {
     return {
       isCollapse: false,
       // 被激活的链接地址
-      activePath: ''
+      activePath: '',
+      // 当前时间
+      time: ''
     };
   },
   components: {},
@@ -116,10 +127,24 @@ export default {
     handleSelect(activePath) {
       window.sessionStorage.setItem('activePath', activePath)
       this.activePath = activePath
+    },
+    // 获取当前时间
+    getNowTime() {
+      setInterval(()=>{
+        var nowTime = new Date()
+        var nowYear = nowTime.getFullYear()
+        var nowMonth = nowTime.getMonth()
+        var nowDay = nowTime.getDay()
+        var hour =nowTime.getHours();//获取小时
+        var minute =nowTime.getMinutes();//获取分钟
+        var second =nowTime.getSeconds();//获取秒
+        this.time = `${nowYear}年${nowMonth}月${nowDay}日 ${hour}时${minute}分${second}秒`
+      }, 1000)
     }
   },
   created() {
     this.handleSelect(window.sessionStorage.getItem('activePath'))
+    this.getNowTime()
   },
   computed: {
     user() {
@@ -154,6 +179,11 @@ export default {
 .el-header .title span {
   margin-left: 10px;
 }
+.el-header .time {
+  align-items: center;
+  color: #fff;
+  font-size: 20px;
+}
 .userinfo span {
   margin-right: 10px;
 }
@@ -166,7 +196,7 @@ export default {
   font-size: 10px;
   line-height: 24px;
   text-align: center;
-  letter-spacing: .2em;
+  letter-spacing: 0.2em;
   cursor: pointer;
 }
 .el-menu {

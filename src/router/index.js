@@ -1,16 +1,19 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home'
-import Register from '../views/Register'
-import Login from '../views/Login'
-import NotFound from '../views/404'
 
-import Welcome from '../components/Welcome'
-import Users from '../components/user/Users'
-import Articles from '../components/article/Articles'
-import Edit from '../components/article/Edit'
-import Category from '../components/article/Category'
-import Admin from '../components/Admin'
+
+// import Home from '../views/Home'
+// import Register from '../views/Register'
+// import Login from '../views/Login'
+// import NotFound from '../views/404'
+
+// import Welcome from '../components/Welcome'
+// import Users from '../components/user/Users'
+// import Articles from '../components/article/Articles'
+// import Edit from '../components/article/Edit'
+// import Category from '../components/article/Category'
+// import Tag from '../components/article/Tag'
+// import Admin from '../components/Admin'
 
 Vue.use(VueRouter)
 
@@ -21,43 +24,46 @@ const routes = [{
   {
     path: '/home',
     name: 'Home',
-    component: Home,
+    component: () => import(/* webpackChunkName: "home" */ '../views/Home.vue'),
     redirect: '/welcome',
     children: [{
       path: '/welcome',
-      component: Welcome
+      component: () => import(/* webpackChunkName: "welcome" */ '../components/Welcome')
     }, {
       path: '/users',
-      component: Users
+      component: () => import(/* webpackChunkName: "users" */ '../components/user/Users.vue')
     }, {
       path: '/articles',
-      component: Articles
+      component: () => import(/* webpackChunkName: "articles" */ '../components/article/Articles.vue')
     }, {
       path: '/articles/edit',
       name: 'Edit',
-      component: Edit
+      component: () => import(/* webpackChunkName: "edit" */ '../components/article/Edit.vue')
     }, {
       path: '/category',
-      component: Category
+      component: () => import(/* webpackChunkName: "category" */ '../components/article/Category.vue')
+    }, {
+      path: '/tag',
+      component: () => import(/* webpackChunkName: "tag" */ '../components/article/Tag.vue')
     }, {
       path: '/admin',
-      component: Admin
+      component: () => import(/* webpackChunkName: "admin" */ '../components/Admin.vue')
     }]
   },
   {
     path: '/register',
     name: 'Register',
-    component: Register
+    component: () => import(/* webpackChunkName: "register" */ '../views/Register.vue')
   },
   {
     path: '/login',
     name: 'Login',
-    component: Login
+    component: () => import(/* webpackChunkName: "login" */ '../views/Login.vue')
   },
   {
     path: '*',
     name: '/404',
-    component: NotFound
+    component: () => import(/* webpackChunkName: "404" */ '../views/404.vue')
   }
   // {
   //   path: '/about',

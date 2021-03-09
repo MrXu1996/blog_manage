@@ -1,0 +1,2 @@
+(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["register"],{"73cf":function(e,n,t){"use strict";t.r(n);var r=function(){var e=this,n=e.$createElement,t=e._self._c||n;return t("div",[e._v("注册")])},s=[],c={name:"Register",data:function(){return{}},components:{},methods:{}},o=c,a=t("2877"),i=Object(a["a"])(o,r,s,!1,null,"6b749f84",null);n["default"]=i.exports}}]);
+//# sourceMappingURL=register.ebecd142.js.map

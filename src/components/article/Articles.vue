@@ -122,7 +122,7 @@ export default {
       if (!title) {
         return this.$message.error("请输入文章标题！");
       }
-      const data = await this.$http.get(`/articles/article/${title}`);
+      const data = await this.$http.get(`/articles/title/${title}`);
       if (!data) {
         return this.$message.error("没有查询到文章!");
       }

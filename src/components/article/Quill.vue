@@ -70,23 +70,6 @@ export default {
     };
   },
   methods: {
-    handleSuccess(res) {
-      console.log("111");
-      // 获取富文本组件实例
-      let quill = this.$refs.articleEditor.quill;
-      // 如果上传成功
-      if (res) {
-        // 获取光标所在位置
-        let length = quill.getSelection().index;
-        // 插入图片，res为服务器返回的图片链接地址
-        quill.insertEmbed(length, "image", res);
-        // 调整光标到最后
-        quill.setSelection(length + 1);
-      } else {
-        // 提示信息，需引入Message
-        Message.error("图片插入失败");
-      }
-    },
   },
 };
 </script>

@@ -23,6 +23,8 @@ axios.defaults.baseURL= 'http://127.0.0.1:9090/api/'
 Vue.config.productionTip = false
 
 Vue.use(ElementUI);
+import VueParticles from 'vue-particles'
+Vue.use(VueParticles)
 
 new Vue({
   router,

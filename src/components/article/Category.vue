@@ -160,19 +160,18 @@ export default {
         return this.$message.error("请输入分类名！");
       }
       const name = this.category
-      const data = await this.$http.get(`/articlecategory/${name}`);
+      const data = await this.$http.get(`/articlecategory/categoryname/${name}`);
       if (!data) {
-        return this.$message.error("没有查询到用户信息!");
+        return this.$message.error("没有查询到分类信息!");
       }
       this.categorylist = data.data.category
-      console.log(data);
     },
 
     // 添加分类
     addCategory() {
       this.$refs.addFormRef.validate(async (valid) => {
         if (!valid) return;
-        // 发起添加用户的网络请求
+        // 发起添加分类的网络请求
         const token = window.sessionStorage.getItem("eleToken");
         const res = await this.$http.post("/articlecategory/add", {
           category: this.addForm,
@@ -180,10 +179,10 @@ export default {
         if (res.status !== 200) {
           return this.$message.error("添加分类失败");
         }
-        this.$message.success("添加用户成功！");
+        this.$message.success("添加分类成功！");
         // 隐藏对话框
         this.addCategoryDialog = false;
-        // 重新获取用户列表数据
+        // 重新获取分类列表数据
         this.getCategoryList();
       });
     },
@@ -194,10 +193,10 @@ export default {
     // 编辑分类
     async editCategoryBtn(id) {
       this.editCategoryDialog = true;
-      const token = window.sessionStorage.getItem("eleToken");
-      const data = await this.$http.get(`/articlecategory/${id}`);
+      // const token = window.sessionStorage.getItem("eleToken");
+      const data = await this.$http.get(`/articlecategory/categoryid/${id}`);
       if (data.status !== 200) {
-        return this.$message.error("没有查询到用户信息!");
+        return this.$message.error("没有查询到分类信息!");
       }
       this.editForm = data.data.category[0];
     },
@@ -205,7 +204,7 @@ export default {
       this.$refs.editFormRef.validate(async (valid) => {
         if (!valid) return;
 
-        // 发起修改用户的网络请求
+        // 发起修改分类的网络请求
         const _id = this.editForm._id;
         const token = window.sessionStorage.getItem("eleToken");
         const res = await this.$http.post(`/articlecategory/edit/${_id}`, {
@@ -233,7 +232,7 @@ export default {
         type: "warning",
       })
         .then(async () => {
-          // 发送删除用户的网络请求
+          // 发送删除分类的网络请求
           const token = window.sessionStorage.getItem("eleToken");
           const data = await this.$http.delete(`/articlecategory/delete/${id}`);
           if (data.status !== 200) {

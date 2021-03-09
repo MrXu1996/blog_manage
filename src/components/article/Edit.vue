@@ -34,6 +34,33 @@
             </el-option>
           </el-select>
         </el-form-item>
+        <el-form-item label="文章标签" prop="tag">
+          <el-select          
+            v-model="articleForm.tag"
+            multiple
+            filterable
+            :multiple-limit=3
+            default-first-option
+            placeholder="请选择文章标签"
+          >
+            <el-option
+              v-for="item in tags"
+              :key="item._id"
+              :label="item.name"
+              :value="item.name"
+            >
+            </el-option>
+          </el-select>
+          <!-- <el-select v-model="articleForm.tag" placeholder="请选择">
+            <el-option
+              v-for="item in tags"
+              :key="item.name"
+              :label="item.name"
+              :value="item._id"
+            >
+            </el-option>
+          </el-select> -->
+        </el-form-item>
         <el-form-item label="发布时间" prop="publishDate">
           <el-date-picker
             v-model="articleForm.publishDate"
@@ -82,6 +109,7 @@ export default {
         title: "",
         author: "",
         category: "",
+        tag: [],
         publishDate: "",
         cover: "",
         content: "",
@@ -108,8 +136,12 @@ export default {
             trigger: "blur",
           },
         ],
+        tag: [
+            { type: 'array', required: true, message: '请至少选择一个标签', trigger: 'change' }
+        ],
       },
       categories: [],
+      tags: [],
     };
   },
   components: { Quill },
@@ -126,6 +158,18 @@ export default {
       this.categories = data.data.names;
       this.articleForm.category = this.categories[0]._id;
     },
+    // 获取文章标签
+    async getTag() {
+      const token = window.sessionStorage.getItem("eleToken");
+      const data = await this.$http.get("/articletag", {
+        e: token,
+      });
+      if (data.status !== 200) {
+        return this.$message.error("数据获取失败！");
+      }
+      this.tags = data.data.names;
+      // this.articleForm.tag[0] = this.tags[0].name;
+    },
     // 提交文章
     async addArticle() {
       if (!this.articleForm._id) {
@@ -137,32 +181,37 @@ export default {
         if (data.status == 200) {
           this.$router.push("/articles");
           this.$message.success("文章添加成功");
-        } else {
-          this.$$message.error("文章添加失败");
+        } else if (data.status == 400) {
+          this.$message.error("文章添加失败,请上传封面图！");
         }
-      } else{
-        this.editArticle()
+        else {
+          this.$message.error("文章添加失败");
+        }
+      } else {
+        this.editArticle();
       }
-
     },
     // 查询文章信息
     async getArticle() {
-      const id = this.articleForm._id
-      const data = await this.$http.get(`/articles/${id}`)
-      const article = data.data.articles[0]
+      const id = this.articleForm._id;
+      const data = await this.$http.get(`/articles/id/${id}`);
+      const article = data.data.articles[0];
 
-      this.articleForm.title = article.title
-      this.articleForm.category = article.category._id
-      this.articleForm.publishDate = article.publishDate
-      this.articleForm.cover = article.cover
-      this.articleForm.content = article.content
+      this.articleForm.title = article.title;
+      this.articleForm.category = article.category._id;
+      this.articleForm.tag = article.tag;
+      this.articleForm.publishDate = article.publishDate;
+      this.articleForm.cover = article.cover;
+      this.articleForm.content = article.content;
     },
 
-    // 更新文章 
+    // 更新文章
     async editArticle() {
-      const id = this.articleForm._id
-      const data = await this.$http.post(`/articles/edit/${id}`, {article: this.articleForm})
-      if(data.status == 200) {        
+      const id = this.articleForm._id;
+      const data = await this.$http.post(`/articles/edit/${id}`, {
+        article: this.articleForm,
+      });
+      if (data.status == 200) {
         this.$router.push("/articles");
         this.$message.success("文章修改成功");
       }
@@ -173,15 +222,16 @@ export default {
       this.articleForm.cover = file.raw;
     },
   },
-  created() {    
+  created() {
     this.articleForm.author = this.$store.getters.user.id;
     this.author = this.$store.getters.user.name;
     this.getCategory();
+    this.getTag();
 
     const articleId = this.$route.params.articleId;
     if (articleId) {
       this.articleForm._id = articleId;
-      this.getArticle()
+      this.getArticle();
     }
   },
 };
