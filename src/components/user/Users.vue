@@ -43,6 +43,7 @@
             <el-switch
               v-model="scope.row.state"
               @change="userStateChange(scope.row)"
+              :disabled="scope.row.role === 'admin'"
             >
             </el-switch>
           </template>
@@ -176,7 +177,7 @@
         </el-form-item>
         <el-form-item label="状态">
           <el-select v-model="editUserForm.state" placeholder="请选择">
-            <el-option :value="true" label="启用"> </el-option>
+            <el-option label="启用" :value="true"> </el-option>
             <el-option label="禁用" :value="false"> </el-option>
           </el-select>
         </el-form-item>

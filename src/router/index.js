@@ -81,6 +81,7 @@ const router = new VueRouter({
 // 路由守卫
 router.beforeEach((to, from, next) => {
   if (to.path === '/login') return next();
+  if (to.path === '/register') return next();
   const isLogin = window.sessionStorage.getItem('eleToken')
   if (!isLogin) return next('/login')
   next()

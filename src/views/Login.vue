@@ -30,14 +30,17 @@
         <el-form-item label="邮箱" prop="email">
           <el-input
             v-model="loginForm.email"
-            prefix-icon="el-icon-user"            
+            prefix-icon="el-icon-user"
+            clearable
           ></el-input>
         </el-form-item>
         <el-form-item label="密码" prop="password">
           <el-input
             v-model="loginForm.password"
-            prefix-icon="el-icon-lock"            
+            prefix-icon="el-icon-lock"
             type="password"
+            show-password
+            @keyup.enter.native="submit"
           ></el-input>
         </el-form-item>
         <el-form-item>
@@ -57,6 +60,7 @@
 <script>
 // 引入jwt-decode,用来解析token
 import jwt_decode from "jwt-decode";
+import JSEncrypt from "jsencrypt";
 
 export default {
   name: "Login",
@@ -67,47 +71,54 @@ export default {
         password: "",
       },
       rules: {
-        email: [
-          { required: true, message: "请输入邮箱", trigger: "blur" }
-        ],
-        password: [
-          { required: true, message: "请输入密码", trigger: "blur" }
-        ],
+        email: [{ required: true, message: "请输入邮箱", trigger: "blur" }],
+        password: [{ required: true, message: "请输入密码", trigger: "blur" }],
       },
     };
   },
   components: {},
   methods: {
     warning1() {
-        this.$message({
-          message: '请输入邮箱地址',
-          type: 'warning',
-          center: true
-        });
-      },
+      this.$message({
+        message: "请输入邮箱地址",
+        type: "warning",
+        center: true,
+      });
+    },
     warning2() {
-        this.$message({
-          message: '请输入密码',
-          type: 'warning',
-          center: true
-        });
-      },
+      this.$message({
+        message: "请输入密码",
+        type: "warning",
+        center: true,
+      });
+    },
+    // RSA加密方法
+    goEncrypt(data) {
+      const encryptor = new JSEncrypt();
+      // 之前生成的公钥↓
+      const publicKey = `MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAKK+FBkHBcCl7dwA0GtLJ8/ZD247HL2y
+      YctO7aGt/qj4l8AGjKWj+ZB6j/7vku5OL0FnNP+5YnktPTCPP/xb1MkCAwEAAQ==`;
+      encryptor.setPublicKey(publicKey);
+      return encryptor.encrypt(data);
+    },
     async submit() {
       // 如果用户没有输入邮件地址和密码
       if (this.loginForm.email.trim().length == 0) {
-        this.warning1()
+        this.warning1();
         return false;
       }
       if (this.loginForm.password.trim().length == 0) {
-        this.warning2()
+        this.warning2();
         return false;
       }
-      const  data = await this.$http.post("/users/login", this.loginForm);
+      this.loginForm.password = this.goEncrypt(this.loginForm.password);
+      const data = await this.$http.post("/users/login", this.loginForm);
       if (data.status == 404) {
-        return this.$message.error('该用户已被禁用，请联系管理员!')
+        return this.$message.error("该用户已被禁用，请联系管理员!");
       }
       if (data.status == 400) {
-        return  this.$message.error('邮件地址或者密码错误!')
+        this.loginForm.password = "";
+        return this.$message.error("邮件地址或者密码错误!");
       }
       if (data.data.success) {
         // 存储 token 到 sessionStorage
@@ -145,11 +156,11 @@ button {
   border: none;
   outline: none;
 }
-#particles-js{
-   width: 100%;
-   height: calc(100% - 100px);
-    position: absolute;  
- }
+#particles-js {
+  width: 100%;
+  height: calc(100% - 100px);
+  position: absolute;
+}
 .login {
   height: 100vh;
   background: linear-gradient(#141e30, #243b55);

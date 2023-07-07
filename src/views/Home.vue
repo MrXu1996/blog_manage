@@ -109,9 +109,9 @@ export default {
     return {
       isCollapse: false,
       // 被激活的链接地址
-      activePath: '',
+      activePath: "",
       // 当前时间
-      time: ''
+      time: "",
     };
   },
   components: {},
@@ -121,30 +121,30 @@ export default {
     },
     // 点击按钮切换菜单的折叠和展开
     toggleCollapse() {
-      this.isCollapse = !this.isCollapse
+      this.isCollapse = !this.isCollapse;
     },
     // 点击菜单项保存被选菜单到sessionStorage
     handleSelect(activePath) {
-      window.sessionStorage.setItem('activePath', activePath)
-      this.activePath = activePath
+      window.sessionStorage.setItem("activePath", activePath);
+      this.activePath = activePath;
     },
     // 获取当前时间
     getNowTime() {
-      setInterval(()=>{
-        var nowTime = new Date()
-        var nowYear = nowTime.getFullYear()
-        var nowMonth = nowTime.getMonth()
-        var nowDay = nowTime.getDay()
-        var hour =nowTime.getHours();//获取小时
-        var minute =nowTime.getMinutes();//获取分钟
-        var second =nowTime.getSeconds();//获取秒
-        this.time = `${nowYear}年${nowMonth}月${nowDay}日 ${hour}时${minute}分${second}秒`
-      }, 1000)
-    }
+      setInterval(() => {
+        var nowTime = new Date();
+        var nowYear = nowTime.getFullYear();
+        var nowMonth = nowTime.getMonth() + 1;
+        var nowDay = nowTime.getDate();
+        var hour = nowTime.getHours(); //获取小时
+        var minute = nowTime.getMinutes(); //获取分钟
+        var second = nowTime.getSeconds(); //获取秒
+        this.time = `${nowYear}年${nowMonth}月${nowDay}日 ${hour}时${minute}分${second}秒`;
+      }, 1000);
+    },
   },
   created() {
-    this.handleSelect(window.sessionStorage.getItem('activePath'))
-    this.getNowTime()
+    this.handleSelect(window.sessionStorage.getItem("activePath"));
+    this.getNowTime();
   },
   computed: {
     user() {
